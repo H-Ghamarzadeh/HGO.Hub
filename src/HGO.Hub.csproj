@@ -13,18 +13,37 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<SignAssembly>False</SignAssembly>
 		<Authors>Hadi Ghamarzadeh</Authors>
-		<Description>A simple library for implement Mediator Pattern with multiple handlers in .NET</Description>
+		<Description>A simple library for implement Event Sourcing, Pub/Sub, Mediator, CQRS Pattern with multiple handlers in .NET
+with this package you can easily implement Wordpress Hooks (Action/Filter) in your ASP.Net project.</Description>
 		<Copyright>Copyright Hadi Ghamarzadeh</Copyright>
-		<PackageTags>mediator;request;response;queries;commands;notifications;pubsub;eventbus</PackageTags>
+		<PackageTags>mediator;request;response;queries;commands;notifications;pubsub;eventbus;action;filter;eventsourcing;hook</PackageTags>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 		<LangVersion>latest</LangVersion>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>HGO.Hub</Title>
+		<PackageProjectUrl>https://github.com/H-Ghamarzadeh/HGO.Hub</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/H-Ghamarzadeh/HGO.Hub.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageIcon>HGO.Hub_Icon.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
+	  
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="HGO.Hub_Icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
