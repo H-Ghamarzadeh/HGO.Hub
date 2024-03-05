@@ -25,7 +25,7 @@ with this package you can easily implement Wordpress Hooks (Action/Filter) in yo
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>HGO.Hub</Title>
 		<PackageProjectUrl>https://github.com/H-Ghamarzadeh/HGO.Hub</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/H-Ghamarzadeh/HGO.Hub.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/H-Ghamarzadeh/HGO.Hub</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageIcon>HGO.Hub_Icon.png</PackageIcon>
@@ -40,10 +40,7 @@ with this package you can easily implement Wordpress Hooks (Action/Filter) in yo
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="HGO.Hub_Icon.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Include="HGO.Hub_Icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
