@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HGO.Hub", "src\HGO.Hub.csproj", "{EA35F398-7205-49EB-973B-7F7FD59D99B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{52245C83-9FDD-487C-9E60-FF13AF35A5D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A4F808B6-4ACA-45D1-A587-B1E593CBB535}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HGO.Hub.Test", "test\HGO.Mediator.Test\HGO.Hub.Test.csproj", "{280CADCB-15DF-470C-934B-431BCF1D0ACE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA35F398-7205-49EB-973B-7F7FD59D99B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA35F398-7205-49EB-973B-7F7FD59D99B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA35F398-7205-49EB-973B-7F7FD59D99B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA35F398-7205-49EB-973B-7F7FD59D99B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{280CADCB-15DF-470C-934B-431BCF1D0ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{280CADCB-15DF-470C-934B-431BCF1D0ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{280CADCB-15DF-470C-934B-431BCF1D0ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{280CADCB-15DF-470C-934B-431BCF1D0ACE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EA35F398-7205-49EB-973B-7F7FD59D99B0} = {52245C83-9FDD-487C-9E60-FF13AF35A5D2}
+		{280CADCB-15DF-470C-934B-431BCF1D0ACE} = {A4F808B6-4ACA-45D1-A587-B1E593CBB535}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A71CF61-5264-49DE-83E8-84E4972C8FBB}
+	EndGlobalSection
+EndGlobal
