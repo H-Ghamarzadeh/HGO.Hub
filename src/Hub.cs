@@ -28,7 +28,7 @@ namespace HGO.Hub
 
             if (services.Any())
             {
-                Task.WaitAll(services.Select(p => p.Handle(TryClone(@event))).ToArray());
+                await Task.WhenAll(services.Select(p => p.Handle(TryClone(@event))).ToArray());
                 
                 //foreach (var service in services)
                 //{
