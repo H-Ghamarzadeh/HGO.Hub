@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HGO.Hub.csproj" />
+    <ProjectReference Include="..\src\HGO.Hub.csproj" />
   </ItemGroup>
 
   <ItemGroup>
