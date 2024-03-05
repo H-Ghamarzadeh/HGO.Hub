@@ -8,7 +8,7 @@
     {
         public async Task SendEmail(string to, string subject, string body)
         {
-            //await Task.Delay(1);
+            await Task.Delay(1000);
         }
     }
 }
