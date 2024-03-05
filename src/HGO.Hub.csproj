@@ -11,7 +11,7 @@
 		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SignAssembly>False</SignAssembly>
+		<SignAssembly>True</SignAssembly>
 		<Authors>Hadi Ghamarzadeh</Authors>
 		<Description>A simple library for implement Event Sourcing, Pub/Sub, Mediator, CQRS Pattern with multiple handlers in .NET
 with this package you can easily implement Wordpress Hooks (Action/Filter) in your ASP.Net project.</Description>
@@ -29,6 +29,7 @@ with this package you can easily implement Wordpress Hooks (Action/Filter) in yo
 		<RepositoryType>git</RepositoryType>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageIcon>HGO.Hub_Icon.png</PackageIcon>
+		<AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 	<ItemGroup>
