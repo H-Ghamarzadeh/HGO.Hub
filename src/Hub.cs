@@ -28,10 +28,12 @@ namespace HGO.Hub
 
             if (services.Any())
             {
-                foreach (var service in services)
-                {
-                    service.Handle(TryClone(@event)).ConfigureAwait(false);
-                }
+                Task.WaitAll(services.Select(p => p.Handle(TryClone(@event))).ToArray());
+                
+                //foreach (var service in services)
+                //{
+                    //service.Handle(TryClone(@event)).ConfigureAwait(false);
+                //}
             }
         }
 
