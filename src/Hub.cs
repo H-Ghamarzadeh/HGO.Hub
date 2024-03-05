@@ -30,7 +30,7 @@ namespace HGO.Hub
             {
                 foreach (var service in services)
                 {
-                    await service.Handle(TryClone(@event)).ConfigureAwait(false);
+                    service.Handle(TryClone(@event)).ConfigureAwait(false).GetAwaiter();
                 }
             }
         }

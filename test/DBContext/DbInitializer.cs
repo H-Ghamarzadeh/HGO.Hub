@@ -15,35 +15,40 @@ public static class DbInitializer
                 Id = 1,
                 FirstName = "William",
                 LastName = "Shakespeare",
-                EmailAddress = "W.Shakespeare@abc.com"
+                EmailAddress = "W.Shakespeare@abc.com",
+                PhoneNumber = "+11234567890"
             },
             new User()
             {
                 Id = 2,
                 FirstName = "Catherine",
                 LastName = "Torphy",
-                EmailAddress = "C.Torphy@abc.com"
+                EmailAddress = "C.Torphy@abc.com",
+                PhoneNumber = "+11234567891"
             },
             new User()
             {
                 Id = 3,
                 FirstName = "Gerhard",
                 LastName = "Larson",
-                EmailAddress = "G.Larson@abc.com"
+                EmailAddress = "G.Larson@abc.com",
+                PhoneNumber = "+11234567892"
             },
             new User()
             {
                 Id = 4,
                 FirstName = "Amiya",
                 LastName = "Barrows",
-                EmailAddress = "A.Barrows@abc.com"
+                EmailAddress = "A.Barrows@abc.com",
+                PhoneNumber = "+11234567893"
             },
             new User()
             {
                 Id = 5,
                 FirstName = "Katrine",
                 LastName = "Homenick",
-                EmailAddress = "K.Homenick@abc.com"
+                EmailAddress = "K.Homenick@abc.com",
+                PhoneNumber = "+11234567893"
             }
         );
 

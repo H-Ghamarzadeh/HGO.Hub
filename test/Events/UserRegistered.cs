@@ -10,15 +10,21 @@ namespace HGO.Hub.Test.Events
         public int RegisteredUserId { get; set; }
     }
 
-    public class OnUserRegisteredEventHandler(IHub hub, IEmailService emailService) : IEventHandler<OnUserRegistered>
+    public class SendEmailOnUserRegisteredEventHandler(IHub hub, IEmailService emailService) : IEventHandler<OnUserRegistered>
     {
         public async Task Handle(OnUserRegistered @event)
         {
             var user = await hub.RequestAsync(new GetUserRequest(@event.RegisteredUserId));
             await emailService.SendEmail(user.EmailAddress, "Hello", $"Dear {user.FirstName} {user.LastName}, Thank you for join us!");
         }
+    }
 
-        public int Order { get; }
-        public bool Stop { get; }
+    public class SendSmsOnUserRegisteredEventHandler(IHub hub, ISmsService smsService) : IEventHandler<OnUserRegistered>
+    {
+        public async Task Handle(OnUserRegistered @event)
+        {
+            var user = await hub.RequestAsync(new GetUserRequest(@event.RegisteredUserId));
+            await smsService.SendSms(user.PhoneNumber, $"Dear {user.FirstName} {user.LastName}, Thank you for join us!");
+        }
     }
 }

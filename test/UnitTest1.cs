@@ -25,6 +25,7 @@ namespace HGO.Hub.Test
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
             services.AddSingleton <IEmailService, EmailService>();
+            services.AddSingleton <ISmsService, SmsService>();
             var provider = services.BuildServiceProvider();
 
             _hub = provider.GetService<IHub>() ?? throw new InvalidOperationException();
@@ -39,7 +40,8 @@ namespace HGO.Hub.Test
             {
                 FirstName = "John",
                 LastName = "Smith",
-                EmailAddress = "J.Smith@abc.com"
+                EmailAddress = "J.Smith@abc.com",
+                PhoneNumber = "+11234567894"
             };
 
             var userId = await _hub.RequestAsync(new AddUsersRequest(user));
