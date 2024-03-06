@@ -1,6 +1,6 @@
 
 # HGO.Hub (.Net Library for implementing In-Process Messaging mechanism)
-A simple library for implement Event Sourcing, Pub/Sub, Mediator, CQRS Pattern with multiple handlers in .NET, with this package you can easily implement Wordpress Hooks (Action/Filter) in your ASP.Net project.
+A simple library for implementing Event Sourcing, Pub/Sub, Mediator, CQRS Pattern with multiple handlers in .NET. With this package you can easily implement Wordpress Hooks (Action/Filter) in your ASP.Net project.
 
 [![NuGet version (HGO.Hub)](https://img.shields.io/nuget/v/HGO.Hub)](https://www.nuget.org/packages/HGO.Hub/)
 
@@ -47,12 +47,12 @@ This registers:
 -   `IRequestHandler<,>`  as Scoped
 
 ### Messages Type
-There is 4 type of messages which you can send via `IHub` into pipeline, each type of messages will be delivered automatically to corresponding handler.
+There are 4 type of messages that you can send via `IHub` into pipeline, each type of message will be delivered automatically to corresponding handler.
 
- - `Event`: This type of messages will be published into pipeline as an event, events will be handled by multiple corresponding handlers asynchronously and in parallel. Also, events do not return any value.
- - `Action`: This type of messages will be published into pipeline as an action, actions will be handled by multiple corresponding handlers asynchronously and sequentially (based on `Order` property - lower numbers correspond with earlier execution). These types of messages are equal to events, with the difference that they are executed sequentially. Also, actions do not return any value. In general, actions are similar to WordPress Actions.
- - `Filter`: Asynchronously and sequentially (based on `Order` property - lower numbers correspond with earlier execution) applies all the corresponding filter handlers which registered in the pipeline to the data and returns the filtered data. Samething as Wordpress Filters.
- - `Request`: Asynchronously will sent a request (Command/Query) to corresponding handler and will return the response. You can have multiple handler for a request, but just one of them will be executed (which has larger number in `Priority` property). with type of messages you can implement CQRS and Mediator pattern.
+ - `Event`: These type of messages will be published into pipeline as an event, events will be handled by multiple corresponding handlers asynchronously and in parallel. Also, events do not return any value.
+ - `Action`: These type of messages will be published into pipeline as an action, actions will be handled by multiple corresponding handlers asynchronously and sequentially (based on `Order` property - lower numbers correspond with earlier execution). These types of messages are equal to events, with the difference that they are executed sequentially. Also, actions do not return any value. In general, actions are similar to WordPress Actions.
+ - `Filter`: Asynchronously and sequentially (based on `Order` property - lower numbers correspond with earlier execution) applies all the corresponding filter handlers which registered in the pipeline to the data and returns the filtered data. It has the same functionality as WordPress filters.
+ - `Request`: Asynchronously will sent a request (Command/Query) to corresponding handler and will return the response. You can have multiple handlers for a request, but just one of them will be executed (which has larger number in `Priority` property). with these type of messages you can implement CQRS and Mediator pattern.
 
 ### Publish an Event example:
 
