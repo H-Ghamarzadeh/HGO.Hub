@@ -88,6 +88,6 @@ await _hub.PublishEventAsync(new OnUserRegistered() { RegisteredUserId = userId 
 ```
 
 ### More examples:
-For more examples please check `HGO.Hub.Test` project, I write some unit tests for all type of messages!
+For more examples please check `HGO.Hub.Test` project, , I've written some unit tests for all type of messages!
 
 #### If you have any kind of question or problem, I will be happy to contact me via email: h.ghamarzadeh@hotmail.com
