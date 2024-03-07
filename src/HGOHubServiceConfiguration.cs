@@ -9,9 +9,9 @@ namespace HGO.Hub
     public class HgoHubServiceConfiguration
     {
         /// <summary>
-        /// Service lifetime to register handlers. Default value is <see cref="ServiceLifetime.Scoped"/>
+        /// Service lifetime to register handlers. Default value is <see cref="ServiceLifetime.Transient"/>
         /// </summary>
-        public ServiceLifetime HandlersDefaultLifetime { get; set; } = ServiceLifetime.Scoped;
+        public ServiceLifetime HandlersDefaultLifetime { get; set; } = ServiceLifetime.Transient;
         internal List<Assembly> AssembliesToRegister { get; set; } = new List<Assembly>();
 
         /// <summary>
