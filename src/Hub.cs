@@ -1,4 +1,5 @@
-﻿using HGO.Hub.Interfaces;
+﻿using System.Collections.Concurrent;
+using HGO.Hub.Interfaces;
 using HGO.Hub.Interfaces.Actions;
 using HGO.Hub.Interfaces.Events;
 using HGO.Hub.Interfaces.Filters;
@@ -171,7 +172,7 @@ namespace HGO.Hub
                 return result;
             }
 
-            return default(TRes);
+            return default;
         }
 
         private static T TryClone<T>(T data)

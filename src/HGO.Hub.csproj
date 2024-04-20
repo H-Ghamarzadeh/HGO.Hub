@@ -30,7 +30,7 @@ with this package you can easily implement Wordpress Hooks (Action/Filter) in yo
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageIcon>HGO.Hub_Icon.png</PackageIcon>
 		<AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>
-		<Version>1.0.4</Version>
+		<Version>1.0.5</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

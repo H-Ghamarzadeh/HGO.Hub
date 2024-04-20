@@ -21,7 +21,8 @@ namespace HGO.Hub.Test
             services.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("TestDB"));
             services.AddHgoHub(configuration =>
             {
-                configuration.HandlersDefaultLifetime = ServiceLifetime.Transient;
+                configuration.HubServiceLifetime = ServiceLifetime.Scoped;
+                configuration.HandlersDefaultLifetime = ServiceLifetime.Scoped;
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
             services.AddSingleton <IEmailService, EmailService>();

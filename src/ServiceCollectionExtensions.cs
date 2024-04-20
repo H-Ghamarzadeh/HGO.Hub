@@ -36,7 +36,7 @@ namespace HGO.Hub
         /// <returns>Service collection</returns>
         public static IServiceCollection AddHgoHub(this IServiceCollection services, HgoHubServiceConfiguration configuration)
         {
-            services.AddSingleton<IHub, Hub>();
+            services.Add(new ServiceDescriptor(typeof(IHub), typeof(Hub), configuration.HubServiceLifetime));
             
             ScanAssembliesAndRegisterHandlers(services, configuration.HandlersDefaultLifetime,
                 configuration.AssembliesToRegister);
