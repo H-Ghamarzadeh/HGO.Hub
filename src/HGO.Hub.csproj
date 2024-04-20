@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<Features>strict</Features>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<Deterministic>true</Deterministic>
@@ -12,12 +13,11 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<SignAssembly>True</SignAssembly>
-		<Authors>Hadi Ghamarzadeh</Authors>
-		<Description>A simple library for implement Event Sourcing, Pub/Sub, Mediator, CQRS Pattern with multiple handlers in .NET
-with this package you can easily implement Wordpress Hooks (Action/Filter) in your ASP.Net project.</Description>
-		<Copyright>Copyright Hadi Ghamarzadeh</Copyright>
+		<Authors>SeyedHadi GhamarzadehOsgouei</Authors>
+		<Description>A simple library for implement Event Sourcing, Pub/Sub, Mediator, CQRS Pattern with multiple handlers in .NET, with this package you can easily implement Wordpress Hooks (Action/Filter) in your ASP.Net project.</Description>
+		<Copyright>Copyright SeyedHadi GhamarzadehOsgouei</Copyright>
 		<PackageTags>mediator;request;response;queries;commands;notifications;pubsub;eventbus;action;filter;eventsourcing;hook</PackageTags>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
@@ -31,11 +31,9 @@ with this package you can easily implement Wordpress Hooks (Action/Filter) in yo
 		<PackageIcon>HGO.Hub_Icon.png</PackageIcon>
 		<AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>
 		<Version>1.0.5</Version>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  
-	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
@@ -43,6 +41,7 @@ with this package you can easily implement Wordpress Hooks (Action/Filter) in yo
 
 	<ItemGroup>
 		<None Include="HGO.Hub_Icon.png" Pack="true" PackagePath="\" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
