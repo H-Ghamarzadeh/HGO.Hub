@@ -13,9 +13,9 @@ namespace HGO.Hub.Test.CQRS.Queries
         {
             _dbContext = dbContext;
         }
-        public async Task<User> Handle(GetUserRequest request)
+        public async Task<RequestHandlerResult<User>> Handle(GetUserRequest request)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(p => p.Id == request.Id);
+            return new RequestHandlerResult<User>(await _dbContext.Users.FirstOrDefaultAsync(p => p.Id == request.Id));
         }
 
         public int Priority => 0;

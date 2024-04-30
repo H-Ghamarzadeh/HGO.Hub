@@ -1,10 +1,13 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using HGO.Hub.Interfaces;
 using HGO.Hub.Interfaces.Actions;
 using HGO.Hub.Interfaces.Events;
 using HGO.Hub.Interfaces.Filters;
 using HGO.Hub.Interfaces.Requests;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace HGO.Hub
 {
@@ -12,44 +15,114 @@ namespace HGO.Hub
     public class Hub: IHub
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<IHub>? _logger;
 
         /// <summary>
         /// Initializes a new instance of the Hub class
         /// </summary>
         /// <param name="serviceProvider">Service provider</param>
-        public Hub(IServiceProvider serviceProvider)
+        /// <param name="logger"></param>
+        public Hub(IServiceProvider serviceProvider, ILogger<IHub>? logger = null)
         {
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
-        /// <inheritdoc />
-        public async Task PublishEventAsync<T>(T @event) where T : IEvent
+        private string ObjectToJson<T>(T obj)
         {
-            var services = _serviceProvider.GetServices<IEventHandler<T>>().ToList();
-
-            if (services.Any())
+            if (obj == null)
             {
-                await Task.WhenAll(services.Select(p => p.Handle(TryClone(@event))).ToArray());
-                
-                //foreach (var service in services)
-                //{
-                    //service.Handle(TryClone(@event)).ConfigureAwait(false);
-                //}
+                return "{}";
+            }
+
+            try
+            {
+                return JsonSerializer.Serialize(obj, new JsonSerializerOptions()
+                {
+                    WriteIndented = true,
+                    ReferenceHandler = ReferenceHandler.IgnoreCycles
+                });
+            }
+            catch (Exception e)
+            {
+                Log($"An exception occurred when try to serialize object ({obj}): {e.Message}");
+            }
+
+            return string.Empty;
+        }
+
+        private void Log(string message = "", Exception? ex = null)
+        {
+            if (ServiceCollectionExtensions.HgoHubServiceConfiguration.LogEvents)
+            {
+                if (ex != null)
+                {
+                    _logger?.Log(LogLevel.Error, ex, message);
+                }
+                else
+                {
+                    _logger?.Log(LogLevel.Information, message);
+                }
             }
         }
 
         /// <inheritdoc />
-        public async Task DoActionAsync<T>(T action) where T : IAction
+        public async Task PublishEventAsync<T>(T @event, bool handleExceptions = true) where T : IEvent
         {
+            Log($"Publishing '{@event.GetType().FullName}' Event{Environment.NewLine}{ObjectToJson(@event)}");
+
+            var services = _serviceProvider.GetServices<IEventHandler<T>>().ToList();
+
+            if (services.Any())
+            {
+                await Task.WhenAll(services.Select(p =>
+                {
+                    //Run Event Handler
+                    Log($"Executing '{p.GetType().FullName}' Event Handler.");
+
+                    return p.Handle(TryClone(@event));
+
+                }).Select(p=> p.ContinueWith(c =>
+                {
+                    //On exception
+                    Log("Error", c.Exception);
+                    if (!handleExceptions && c.Exception != null)
+                        throw c.Exception;
+
+                }, TaskContinuationOptions.OnlyOnFaulted).ContinueWith(t=> t)).ToArray());
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task DoActionAsync<T>(T action, bool handleExceptions = true) where T : IAction
+        {
+            Log($"Publishing '{action.GetType().FullName}' Action{Environment.NewLine}{ObjectToJson(action)}");
+
             var services = _serviceProvider.GetServices<IActionHandler<T>>().ToList();
 
             if (services.Any())
             {
                 foreach (var service in services.OrderBy(p => p.Order))
                 {
-                    await service.Handle(TryClone(action));
+                    Log($"Executing '{service.GetType().FullName}' Action Handler.");
+
+                    try
+                    {
+                        await service.Handle(TryClone(action));
+                    }
+                    catch (Exception e)
+                    {
+                        //On exception
+                        Log($"An exception occurred in the '{service.GetType().FullName}' action handler", e);
+                        if (!handleExceptions)
+                            throw e;
+                    }
+
                     if (service.Stop)
                     {
+                        Log(
+                            $"Execution of the remaining actions in the pipeline was stopped by '{service.GetType().FullName}' action handler.");
+
                         break;
                     }
                 }
@@ -93,18 +166,42 @@ namespace HGO.Hub
 
             return result;
         }
-        
+
         /// <inheritdoc />
-        public async Task<T> ApplyFiltersAsync<T>(T data)
+        public async Task<T> ApplyFiltersAsync<T>(T data, bool handleExceptions = true)
         {
+            if (data == null)
+            {
+                return data;
+            }
+
+            Log($"Applying filters on '{data?.GetType().FullName}' {Environment.NewLine}{ObjectToJson(data)}");
+
             var services = _serviceProvider.GetServices<IFilterHandler<T>>().ToList();
             if (services.Any())
             {
                 foreach (var service in services.OrderBy(p => p.Order))
                 {
-                    data = await service.Handle(TryClone(data));
+                    Log($"Executing '{service.GetType().FullName}' Filter.");
+
+                    try
+                    {
+                        data = await service.Handle(TryClone(data));
+
+                        Log($"Result '{data?.GetType().FullName}' {Environment.NewLine}{ObjectToJson(data)}");
+                    }
+                    catch (Exception e)
+                    {
+                        //On exception
+                        Log($"An exception occurred in the '{service.GetType().FullName}' filter handler", e);
+                        if (!handleExceptions)
+                            throw e;
+                    }
+
                     if (service.Stop)
                     {
+                        Log($"Execution of the remaining filters in the pipeline was stopped by '{service.GetType().FullName}' filter handler.");
+
                         break;
                     }
                 }
@@ -153,23 +250,47 @@ namespace HGO.Hub
         }
 
         /// <inheritdoc />
-        public async Task<TRes?> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true)
+        public async Task<TRes?> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true, bool catchExceptionsAndRunNextHandler = true)
         {
+            Log($"Publishing request for '{request.GetType().FullName}' {Environment.NewLine}{ObjectToJson(request)}");
+
             var serviceType = typeof(IRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TRes));
-            var services = _serviceProvider.GetServices(serviceType).ToList();
+            var services = _serviceProvider.GetServices(serviceType)
+                                                       .OrderByDescending(p => (int)serviceType.GetProperty("Priority").GetValue(p))
+                                                       .Where(p => p != null)
+                                                       .ToList();
             if (services.Any())
             {
-                var service = services.OrderByDescending(p=> (int)serviceType.GetProperty("Priority").GetValue(p)).First();
-                var resultObject = serviceType.GetMethod("Handle").Invoke(service, new[] { request });
-
-                var result = await (Task<TRes>)resultObject;
-
-                if (autoApplyFiltersOnResponse)
+                foreach (var service in services)
                 {
-                    return await ApplyFiltersAsync(result);
-                }
+                    Log($"Executing '{service.GetType().FullName}' Request Handler.");
 
-                return result;
+                    try
+                    {
+                        var resultObject = serviceType.GetMethod("Handle").Invoke(service, new[] { request });
+
+                        var result = await (Task<RequestHandlerResult<TRes>>)resultObject;
+
+                        Log($"'{service.GetType().FullName}' Result:{Environment.NewLine}Type: {result.Result?.GetType().FullName}{Environment.NewLine}Value:{ObjectToJson(result.Result)}{Environment.NewLine}Handled:{result.Handled}");
+
+                        if (result.Handled)
+                        {
+                            if (autoApplyFiltersOnResponse)
+                            {
+                                return await ApplyFiltersAsync(result.Result);
+                            }
+
+                            return result.Result;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //On exception
+                        Log($"An exception occurred in the '{service?.GetType().FullName}' request handler", ex);
+                        if (!catchExceptionsAndRunNextHandler)
+                            throw ex;
+                    }
+                }
             }
 
             return default;

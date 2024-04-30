@@ -6,9 +6,9 @@ namespace HGO.Hub.Test.CQRS.Queries;
 
 public class FindUsersRequestHandler(TestDbContext dbContext) : IRequestHandler<FindUsersRequest, List<User>>
 {
-    public async Task<List<User>> Handle(FindUsersRequest request)
+    public async Task<RequestHandlerResult<List<User>>> Handle(FindUsersRequest request)
     {
-        return dbContext.Users.Where(request.Term).ToList();
+        return new RequestHandlerResult<List<User>>(dbContext.Users.Where(request.Term).ToList());
     }
 
     public int Priority => 0;

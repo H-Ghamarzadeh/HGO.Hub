@@ -9,6 +9,10 @@ namespace HGO.Hub
     public class HgoHubServiceConfiguration
     {
         /// <summary>
+        /// If set to true all events and information will be logged (Need to implement and register Microsoft.Extensions.Logging.ILogger)
+        /// </summary>
+        public bool LogEvents { get; set; } = false;
+        /// <summary>
         /// Service lifetime to register Hub Service. Default value is <see cref="ServiceLifetime.Scoped"/>
         /// </summary>
         public ServiceLifetime HubServiceLifetime { get; set; } = ServiceLifetime.Scoped;

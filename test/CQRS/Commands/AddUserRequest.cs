@@ -6,11 +6,11 @@ namespace HGO.Hub.Test.CQRS.Commands
 {
     public class AddUsersRequestHandler(TestDbContext dbContext) : IRequestHandler<AddUsersRequest, int>
     {
-        public async Task<int> Handle(AddUsersRequest request)
+        public async Task<RequestHandlerResult<int>> Handle(AddUsersRequest request)
         {
             await dbContext.Users.AddAsync(request.User);
             await dbContext.SaveChangesAsync();
-            return request.User.Id;
+            return new RequestHandlerResult<int>(request.User.Id);
         }
 
         public int Priority => 0;

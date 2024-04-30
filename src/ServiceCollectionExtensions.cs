@@ -13,6 +13,8 @@ namespace HGO.Hub
     /// </summary>
     public static class ServiceCollectionExtensions
     {
+        internal static HgoHubServiceConfiguration HgoHubServiceConfiguration = new HgoHubServiceConfiguration();
+
         /// <summary>
         /// Registers HGO.Hub services and handlers from the specified assemblies
         /// </summary>
@@ -40,6 +42,7 @@ namespace HGO.Hub
             
             ScanAssembliesAndRegisterHandlers(services, configuration.HandlersDefaultLifetime,
                 configuration.AssembliesToRegister);
+            HgoHubServiceConfiguration = configuration;
 
             return services;
         }

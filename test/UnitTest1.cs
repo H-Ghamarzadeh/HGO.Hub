@@ -8,6 +8,8 @@ using HGO.Hub.Test.Events;
 using HGO.Hub.Test.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Shouldly;
 
 namespace HGO.Hub.Test
@@ -21,12 +23,25 @@ namespace HGO.Hub.Test
             services.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("TestDB"));
             services.AddHgoHub(configuration =>
             {
+                configuration.LogEvents = true;
                 configuration.HubServiceLifetime = ServiceLifetime.Scoped;
                 configuration.HandlersDefaultLifetime = ServiceLifetime.Scoped;
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
-            services.AddSingleton <IEmailService, EmailService>();
-            services.AddSingleton <ISmsService, SmsService>();
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .WriteTo.File("Logs.txt")
+                .CreateLogger();
+            services.AddLogging(cfg =>
+            {
+                cfg.ClearProviders();
+                cfg.AddSerilog(dispose: true);
+            });
+
+            services.AddSingleton<IEmailService, EmailService>();
+            services.AddSingleton<ISmsService, SmsService>();
             var provider = services.BuildServiceProvider();
 
             _hub = provider.GetService<IHub>() ?? throw new InvalidOperationException();

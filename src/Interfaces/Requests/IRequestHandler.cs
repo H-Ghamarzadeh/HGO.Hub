@@ -12,7 +12,7 @@ public interface IRequestHandler<in TReq, TRes> where TReq : IRequest<TRes>
     /// </summary>
     /// <param name="request">An object of IRequest interface which contain information about request</param>
     /// <returns>Response</returns>
-    Task<TRes> Handle(TReq request);
+    Task<RequestHandlerResult<TRes>> Handle(TReq request);
 
     /// <summary>
     /// Priority of handler. The handler with the largest value will ONLY be executed.

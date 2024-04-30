@@ -8,7 +8,7 @@
     {
         public async Task SendSms(string to, string text)
         {
-            await Task.Delay(10000);
+            await Task.Delay(5000);
         }
     }
 }

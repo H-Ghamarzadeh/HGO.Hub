@@ -7,13 +7,15 @@ namespace HGO.Hub.Test.CQRS.Queries
 {
     public class GetPostRequestHandler(TestDbContext dbContext) : IRequestHandler<GetPostRequest, Post>
     {
-        public async Task<Post> Handle(GetPostRequest request)
+        public async Task<RequestHandlerResult<Post>> Handle(GetPostRequest request)
         {
-            if (request.PostType == "Product")
-            {
-                return await dbContext.Products.FirstOrDefaultAsync(p => p.Id == request.Id);
-            }
-            return await dbContext.Posts.FirstOrDefaultAsync(p => p.Id == request.Id);
+            var result = new RequestHandlerResult<Post>(null);
+
+            result.Result = request.PostType == "Product"
+                ? await dbContext.Products.FirstOrDefaultAsync(p => p.Id == request.Id)
+                : await dbContext.Posts.FirstOrDefaultAsync(p => p.Id == request.Id);
+
+            return result;
         }
 
         public int Priority => 0;

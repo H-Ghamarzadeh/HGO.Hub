@@ -4,6 +4,7 @@
 /// 
 /// </summary>
 /// <typeparam name="T"></typeparam>
+[Obsolete]
 public class FilterHandlerResult<T>
 {
     /// <summary>
