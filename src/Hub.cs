@@ -252,7 +252,7 @@ namespace HGO.Hub
         }
 
         /// <inheritdoc />
-        public async Task<TRes?> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true, bool catchExceptionsAndRunNextHandler = false)
+        public async Task<TRes> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true, bool catchExceptionsAndRunNextHandler = false)
         {
             Log($"Publishing request for '{request.GetType().FullName}' {Environment.NewLine}{ObjectToJson(request)}");
 

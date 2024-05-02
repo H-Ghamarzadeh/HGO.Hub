@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="result"></param>
         /// <param name="handled"></param>
-        public RequestHandlerResult(TRes? result, bool handled = true)
+        public RequestHandlerResult(TRes result, bool handled = true)
         {
             Result = result;
             Handled = handled;
@@ -24,6 +24,6 @@
         /// <summary>
         /// Result of current Request Handler
         /// </summary>
-        public TRes? Result { get; set; }
+        public TRes Result { get; set; }
     }
 }

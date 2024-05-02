@@ -65,6 +65,6 @@ namespace HGO.Hub.Interfaces
         /// <param name="catchExceptionsAndRunNextHandler">If set to true, all exceptions will be caught and an attempt will be made to retrieve data from the next request handler in the pipeline.</param>
         /// <typeparam name="TRes">Type of response object</typeparam>
         /// <returns>Generated response</returns>
-        Task<TRes?> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true, bool catchExceptionsAndRunNextHandler = false);
+        Task<TRes> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true, bool catchExceptionsAndRunNextHandler = false);
     }
 }
