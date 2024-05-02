@@ -53,16 +53,15 @@ namespace HGO.Hub
 
         private void Log(string message = "", Exception? ex = null)
         {
-            if (ServiceCollectionExtensions.HgoHubServiceConfiguration.LogEvents)
+            if (!ServiceCollectionExtensions.HgoHubServiceConfiguration.LogEvents) return;
+
+            if (ex != null)
             {
-                if (ex != null)
-                {
-                    _logger?.Log(LogLevel.Error, ex, message);
-                }
-                else
-                {
-                    _logger?.Log(LogLevel.Information, message);
-                }
+                _logger?.Log(LogLevel.Error, ex, message);
+            }
+            else
+            {
+                _logger?.Log(LogLevel.Information, message);
             }
         }
 
@@ -85,9 +84,10 @@ namespace HGO.Hub
                 }).Select(p => p.ContinueWith(c =>
                 {
                     //On exception
-                    Log("Error", c.Exception);
                     if (!handleExceptions && c.Exception != null)
                         throw c.Exception;
+
+                    Log("Error", c.Exception);
 
                 }, TaskContinuationOptions.OnlyOnFaulted).ContinueWith(t => t)).ToArray());
             }
@@ -113,9 +113,10 @@ namespace HGO.Hub
                     catch (Exception e)
                     {
                         //On exception
-                        Log($"An exception occurred in the '{service.GetType().FullName}' action handler", e);
                         if (!handleExceptions)
                             throw e;
+
+                        Log($"An exception occurred in the '{service.GetType().FullName}' action handler", e);
                     }
 
                     if (service.Stop)
@@ -194,9 +195,10 @@ namespace HGO.Hub
                     catch (Exception e)
                     {
                         //On exception
-                        Log($"An exception occurred in the '{service.GetType().FullName}' filter handler", e);
                         if (!handleExceptions)
                             throw e;
+
+                        Log($"An exception occurred in the '{service.GetType().FullName}' filter handler", e);
                     }
 
                     if (service.Stop)
@@ -269,7 +271,7 @@ namespace HGO.Hub
 
                     try
                     {
-                        var resultObject = serviceType.GetMethod("Handle").Invoke(service, new[] { request });
+                        var resultObject = serviceType.GetMethod("Handle")?.Invoke(service, [request]);
 
                         var result = await (Task<RequestHandlerResult<TRes>>)resultObject;
 
@@ -288,9 +290,10 @@ namespace HGO.Hub
                     catch (Exception ex)
                     {
                         //On exception
-                        Log($"An exception occurred in the '{service?.GetType().FullName}' request handler", ex);
                         if (!catchExceptionsAndRunNextHandler)
                             throw ex;
+
+                        Log($"An exception occurred in the '{service.GetType().FullName}' request handler", ex);
                     }
                 }
             }
