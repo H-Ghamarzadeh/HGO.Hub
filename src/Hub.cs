@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 namespace HGO.Hub
 {
     /// <inheritdoc />
-    public class Hub: IHub
+    public class Hub : IHub
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<IHub>? _logger;
@@ -67,7 +67,7 @@ namespace HGO.Hub
         }
 
         /// <inheritdoc />
-        public async Task PublishEventAsync<T>(T @event, bool handleExceptions = true) where T : IEvent
+        public async Task PublishEventAsync<T>(T @event, bool handleExceptions = false) where T : IEvent
         {
             Log($"Publishing '{@event.GetType().FullName}' Event{Environment.NewLine}{ObjectToJson(@event)}");
 
@@ -82,19 +82,19 @@ namespace HGO.Hub
 
                     return p.Handle(TryClone(@event));
 
-                }).Select(p=> p.ContinueWith(c =>
+                }).Select(p => p.ContinueWith(c =>
                 {
                     //On exception
                     Log("Error", c.Exception);
                     if (!handleExceptions && c.Exception != null)
                         throw c.Exception;
 
-                }, TaskContinuationOptions.OnlyOnFaulted).ContinueWith(t=> t)).ToArray());
+                }, TaskContinuationOptions.OnlyOnFaulted).ContinueWith(t => t)).ToArray());
             }
         }
 
         /// <inheritdoc />
-        public async Task DoActionAsync<T>(T action, bool handleExceptions = true) where T : IAction
+        public async Task DoActionAsync<T>(T action, bool handleExceptions = false) where T : IAction
         {
             Log($"Publishing '{action.GetType().FullName}' Action{Environment.NewLine}{ObjectToJson(action)}");
 
@@ -130,6 +130,7 @@ namespace HGO.Hub
         }
 
         /// <inheritdoc />
+        [Obsolete]
         public async Task<List<HandlerException<T>>> DoActionAndHandleExceptionsAsync<T>(T action) where T : IAction
         {
             var services = _serviceProvider.GetServices<IActionHandler<T>>().ToList();
@@ -168,7 +169,7 @@ namespace HGO.Hub
         }
 
         /// <inheritdoc />
-        public async Task<T> ApplyFiltersAsync<T>(T data, bool handleExceptions = true)
+        public async Task<T> ApplyFiltersAsync<T>(T data, bool handleExceptions = false)
         {
             if (data == null)
             {
@@ -211,6 +212,7 @@ namespace HGO.Hub
         }
 
         /// <inheritdoc />
+        [Obsolete]
         public async Task<FilterHandlerResult<T>> ApplyFiltersAndHandleExceptionsAsync<T>(T data)
         {
             var services = _serviceProvider.GetServices<IFilterHandler<T>>().ToList();
@@ -250,7 +252,7 @@ namespace HGO.Hub
         }
 
         /// <inheritdoc />
-        public async Task<TRes?> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true, bool catchExceptionsAndRunNextHandler = true)
+        public async Task<TRes?> RequestAsync<TRes>(IRequest<TRes> request, bool autoApplyFiltersOnResponse = true, bool catchExceptionsAndRunNextHandler = false)
         {
             Log($"Publishing request for '{request.GetType().FullName}' {Environment.NewLine}{ObjectToJson(request)}");
 
